@@ -3,14 +3,14 @@
 
 namespace Wefabric\Address;
 
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Cache;
 use nickurt\PostcodeApi\Entity\Address;
 use nickurt\PostcodeApi\ProviderFactory as PostcodeApiProvider;
 use nickurt\PostcodeApi\Providers\Provider;
 
 class PostcodeAPI
 {
-    const CACHE_PATH = '/postcode-api/%s%s.json';
+    const CACHE_PATH = 'postcode-api-%s%s';
 
     /**
      * @var null|Provider
@@ -27,6 +27,7 @@ class PostcodeAPI
         if($cache && $result = $this->getFromCache($postcode, $houseNumber)) {
             return $result;
         }
+
         $result = $this->getApi()->findByPostcodeAndHouseNumber($postcode, $houseNumber);
 
         if(null === $result->getStreet() && null === $result->getHouseNo()) {
@@ -58,7 +59,7 @@ class PostcodeAPI
      */
     public function saveToCache(string $postcode, string $houseNumber, Address $address): bool
     {
-        return Storage::put($this->getCacheKey($postcode, $houseNumber), json_encode($address->toArray()));
+        return Cache::put($this->getCacheKey($postcode, $houseNumber), json_encode($address->toArray()));
     }
 
     /**
@@ -70,7 +71,7 @@ class PostcodeAPI
     {
         $result = null;
         try {
-            if($cacheData = json_decode(Storage::get($this->getCacheKey($postcode, $houseNumber)), true)) {
+            if($cacheData = json_decode(Cache::get($this->getCacheKey($postcode, $houseNumber)), true)) {
                 $result = new Address();
                 $result->setStreet($cacheData['street']);
                 $result->setHouseNo($cacheData['house_no']);
@@ -80,7 +81,7 @@ class PostcodeAPI
                 $result->setLatitude($cacheData['latitude']);
                 $result->setLongitude($cacheData['longitude']);
             }
-        } catch (\Illuminate\Contracts\Filesystem\FileNotFoundException $e) {}
+        } catch (\Exception $e) {}
 
         return $result;
     }
