@@ -1,0 +1,32 @@
+{
+    "name": "wefabric/address",
+    "description": "Laravel package to handle addresses",
+    "keywords": [
+        "wefabric",
+        "addresses",
+        "postcode"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Leo Flapper",
+            "email": "leo@wefabric.nl"
+        }
+    ],
+    "require": {
+        "spatie/data-transfer-object": "^2.8",
+        "nickurt/laravel-postcodeapi": "^1.16"
+    },
+    "autoload": {
+        "psr-4": {
+            "Wefabric\\Address\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Wefabric\\Address\\Providers\\ServiceProvider"
+            ]
+        }
+    }
+}
