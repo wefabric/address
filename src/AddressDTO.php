@@ -5,9 +5,9 @@ namespace Wefabric\Address;
 
 
 use Illuminate\Contracts\Support\Arrayable;
+use Illuminate\Database\Eloquent\Model;
 use Spatie\DataTransferObject\DataTransferObject;
 use Wefabric\Address\Action\AddressToStringAction;
-use Wefabric\Address\Models\Address;
 
 class AddressDTO extends DataTransferObject implements Arrayable
 {
@@ -69,14 +69,15 @@ class AddressDTO extends DataTransferObject implements Arrayable
     }
 
     /**
-     * @return Models\Address
+     * @return Model
      */
-    public function toModel(): Address
+    public function toModel(): Model
     {
-        $address = new Address();
+        $model = \Wefabric\Address\Address::make()->getModelClass();
+        $address = new $model;
         if($this->id) {
-            if(!$address = Address::query()->where('id', $this->id)->first()) {
-                $address = new Address();
+            if(!$address = $model::query()->where('id', $this->id)->first()) {
+                $address = new $model;
             }
         }
        return $address->fill($this->all());

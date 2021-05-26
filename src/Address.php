@@ -4,6 +4,7 @@
 namespace Wefabric\Address;
 
 
+use Illuminate\Database\Eloquent\Model;
 use Wefabric\Address\Action\AddressDTOFromAddressModelAction;
 use Wefabric\Address\Action\AddressDTOFromPostcodeAPIAction;
 use Wefabric\Address\Action\AddressModelFromPostcodeAPIAction;
@@ -11,6 +12,14 @@ use Wefabric\Address\Action\SplitHousenumberAndAdditionAction;
 
 class Address
 {
+    /**
+     * @return Address
+     */
+    public static function make(): Address
+    {
+        return new self();
+    }
+
     /**
      * @param Models\Address $addressModel
      * @return AddressDTO
@@ -49,5 +58,13 @@ class Address
     public function splitHousenumberAndAddition(string $housenumberAndAddition): array
     {
         return app(SplitHousenumberAndAdditionAction::class)->execute($housenumberAndAddition);
+    }
+
+    /**
+     * @return string
+     */
+    public function getModelClass(): string
+    {
+        return config('address.model_class') ?? \Wefabric\Address\Models\Address::class;
     }
 }

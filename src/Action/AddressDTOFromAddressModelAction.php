@@ -4,17 +4,17 @@
 namespace Wefabric\Address\Action;
 
 
+use Illuminate\Database\Eloquent\Model;
 use Wefabric\Address\AddressDTO;
-use Wefabric\Address\Models\Address;
 
 class AddressDTOFromAddressModelAction
 {
 
     /**
-     * @param Address $addressModel
+     * @param Model $addressModel
      * @return AddressDTO
      */
-    public function execute(Address $addressModel)
+    public function execute(Model $addressModel)
     {
         return new AddressDTO($addressModel->toArray());
     }
