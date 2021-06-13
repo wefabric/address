@@ -61,7 +61,7 @@ class Address extends Resource
                     $result = sprintf('<img src="%s" width="480" height="480"/>', $image->getUrl());
                 }
                 return $result;
-            })->asHtml()
+            })->asHtml()->hideFromIndex()->hideWhenCreating()->hideWhenUpdating()
         ];
     }
 
