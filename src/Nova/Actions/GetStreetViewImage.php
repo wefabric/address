@@ -13,7 +13,7 @@ class GetStreetViewImage extends Action
 {
     use InteractsWithQueue, Queueable;
 
-    public $name = 'Get Street View images';
+    public $name = 'Get Street View image';
 
     /**
      * Perform the action on the given models.
@@ -36,9 +36,9 @@ class GetStreetViewImage extends Action
     /**
      * @return string
      */
-    public function getName(): string
+    public function name(): string
     {
-        return __('Get Street View images');
+        return __('wefabric_address::address.street_view_image_action_name');
     }
 
     /**

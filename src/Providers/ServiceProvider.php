@@ -14,10 +14,12 @@ class ServiceProvider extends \Illuminate\Support\ServiceProvider
     {
         $this->publishes([
             __DIR__.'/../../database/migrations/' => database_path('migrations')
-        ], ['address', 'migrations']);
+        ], ['wefabric_address', 'migrations']);
 
         $this->publishes([
             __DIR__.'/../../config/address.php' => config_path('address.php'),
-        ], ['address', 'config']);
+        ], ['wefabric_address', 'config']);
+
+        $this->loadTranslationsFrom(__DIR__.'/../../resources/lang', 'wefabric_address');
     }
 }
