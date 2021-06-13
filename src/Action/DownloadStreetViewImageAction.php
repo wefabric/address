@@ -11,8 +11,7 @@ use Wefabric\Address\Google\StreetViewStaticApi;
 class DownloadStreetViewImageAction
 {
     /**
-     * @param float $latitude
-     * @param float $longitude
+     * @param string $location
      * @param int $width
      * @param int $height
      * @param array $options
@@ -21,7 +20,7 @@ class DownloadStreetViewImageAction
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Wefabric\Address\Exception\StreetViewStaticApiException
      */
-    public function execute(float $latitude, float $longitude, int $width = 0, int $height = 0, array $options = []): string
+    public function execute(string $location, int $width = 0, int $height = 0, array $options = []): string
     {
         $streetViewActive = config('address.google.street_view_active');
 
@@ -30,16 +29,15 @@ class DownloadStreetViewImageAction
         }
 
         if(isset($options['cached']) && $options['cached'] === true) {
-            return $this->getFromCache($latitude, $longitude, $width, $height, $options);
+            return $this->getFromCache($location, $width, $height, $options);
         }
 
-        return StreetViewStaticApi::make()->getThumbnail($latitude, $longitude, $width, $height, $options);
+        return StreetViewStaticApi::make()->getThumbnail($location, $width, $height, $options);
 
     }
 
     /**
-     * @param float $latitude
-     * @param float $longitude
+     * @param string $location
      * @param int $width
      * @param int $height
      * @param array $options
@@ -47,16 +45,16 @@ class DownloadStreetViewImageAction
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Wefabric\Address\Exception\StreetViewStaticApiException
      */
-    private function getFromCache(float $latitude, float $longitude, int $width = 0, int $height = 0, array $options = []): string
+    private function getFromCache(string $location, int $width = 0, int $height = 0, array $options = []): string
     {
         $path = config('address.google.street_view_cache_path');
-        $path .= '/'.base64_encode($latitude.$longitude).'-'.$width.'x'.$height.'.jpg';
+        $path .= '/'.base64_encode($location).'-'.$width.'x'.$height.'.jpg';
 
         if(Storage::exists($path)) {
             return Storage::get($path);
         }
 
-        if(!$result = StreetViewStaticApi::make()->getThumbnail($latitude, $longitude, $width, $height, $options)) {
+        if(!$result = StreetViewStaticApi::make()->getThumbnail($location, $width, $height, $options)) {
             return '';
         }
 

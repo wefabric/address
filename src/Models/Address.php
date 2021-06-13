@@ -13,6 +13,7 @@ use Spatie\MediaLibrary\Support\File;
 use Wefabric\Address\Action\AddressToStringAction;
 use Wefabric\Address\Action\DownloadStreetViewImageAction;
 use Wefabric\Address\Exception\AddressException;
+use Wefabric\Address\Google\Maps;
 use Wefabric\Address\Google\StreetViewStaticApi;
 
 class Address extends Model implements HasMedia
@@ -67,6 +68,14 @@ class Address extends Model implements HasMedia
     }
 
     /**
+     * @return string
+     */
+    public function getGoogleMapsUrl(): string
+    {
+        return Maps::getUrlByAddressModel($this);
+    }
+
+    /**
      * @return \Spatie\MediaLibrary\MediaCollections\Models\Media|null
      * @throws AddressException
      * @throws \GuzzleHttp\Exception\GuzzleException
@@ -86,7 +95,7 @@ class Address extends Model implements HasMedia
      */
     public function setStreetViewImageToCollection(string $image = '')
     {
-         $name = Hash::make($this->latitude.$this->longitude.time());
+         $name = Hash::make($this->getStringAttribute().time());
          return $this
              ->addMediaFromString($image ? $image : $this->downloadStreetViewImage())
              ->setName($name)
@@ -105,10 +114,7 @@ class Address extends Model implements HasMedia
      */
     public function downloadStreetViewImage(int $width = 0, int $height = 0, array $options = []): string
     {
-        if($this->scopeHasCoordinates()) {
-            return app(DownloadStreetViewImageAction::class)->execute($this->latitude, $this->longitude, $width, $height, $options);
-        }
-        return '';
+        return app(DownloadStreetViewImageAction::class)->execute($this->getStringAttribute().' '. $this->country_id, $width, $height, $options);
     }
 
     /**

@@ -65,7 +65,9 @@ class AddressDTO extends DataTransferObject implements Arrayable
      */
     public function toArray(): array
     {
-        return $this->all();
+        $data = $this->all();
+        $data['string'] = $this->toString();
+        return $data;
     }
 
     /**

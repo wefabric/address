@@ -54,12 +54,25 @@ class StreetViewStaticApi
      * @throws StreetViewStaticApiException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getThumbnail(float $latitude, float $longitude, int $width = 0, int $height = 0, array $options = []): string
+    public function getThumbnailByLatLong(float $latitude, float $longitude, int $width = 0, int $height = 0, array $options = [])
+    {
+        return $this->getThumbnail($latitude.','.$longitude, $width, $height, $options);
+    }
+
+    /**
+     * @param string $location
+     * @param int $width
+     * @param int $height
+     * @param array $options
+     * @return string
+     * @throws StreetViewStaticApiException
+     * @throws \GuzzleHttp\Exception\GuzzleException
+     */
+    public function getThumbnail(string $location, int $width = 0, int $height = 0, array $options = []): string
     {
         $defaultQueryParameters = [
             'fov' => 80,
             'pitch' => 0,
-            'heading' => 0,
             'return_error_codes' => true
         ];
 
@@ -74,7 +87,7 @@ class StreetViewStaticApi
         $queryParameters = array_replace_recursive($defaultQueryParameters, $options['query'] ?? []);
 
         $queryParameters['size'] = $width.'x'.$height;
-        $queryParameters['location'] = $latitude.','.$longitude;
+        $queryParameters['location'] = $location;
         $queryParameters['key'] = config('address.google.api_key');
         //$queryParameters['signature'] = '';
 
