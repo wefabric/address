@@ -55,6 +55,13 @@ class Address extends Resource
             Text::make(__('Gemeente'), 'municipality')->sortable()->hideFromIndex(),
             Text::make(__('Provincie'), 'province')->sortable()->hideFromIndex(),
             Text::make(__('Datum'), 'created_at')->sortable()->hideFromIndex()->hideWhenCreating()->hideWhenUpdating(),
+            Text::make(__('Street View'), function (\Wefabric\Address\Models\Address $address) {
+                $result = '-';
+                if($image = $address->getStreetViewImage()) {
+                    $result = sprintf('<img src="%s" width="480" height="480"/>', $image->getUrl());
+                }
+                return $result;
+            })->asHtml()
         ];
     }
 
