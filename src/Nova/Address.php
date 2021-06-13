@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
+use Wefabric\Address\Nova\Actions\GetStreetViewImage;
 
 class Address extends Resource
 {
@@ -106,7 +107,9 @@ class Address extends Resource
      */
     public function actions(Request $request)
     {
-        return [];
+        return [
+            new GetStreetViewImage()
+        ];
     }
 
     /**
