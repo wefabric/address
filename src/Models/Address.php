@@ -11,6 +11,7 @@ use Spatie\MediaLibrary\InteractsWithMedia;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Spatie\MediaLibrary\Support\File;
 use Wefabric\Address\Action\AddressToStringAction;
+use Wefabric\Address\Action\DownloadStreetViewImageAction;
 use Wefabric\Address\Exception\AddressException;
 use Wefabric\Address\Google\StreetViewStaticApi;
 
@@ -102,17 +103,23 @@ class Address extends Model implements HasMedia
      * @throws \GuzzleHttp\Exception\GuzzleException
      * @throws \Wefabric\Address\Exception\StreetViewStaticApiException
      */
-    public function downloadStreetViewImage(int $width = 1024, int $height = 1024, array $options = []): string
+    public function downloadStreetViewImage(int $width = 0, int $height = 0, array $options = []): string
     {
-        $streetViewActive = config('address.google.street_view_active');
-
-        if(!$streetViewActive) {
-            throw new AddressException('Google StreetView is not active. Set your GOOGLE_STREET_VIEW_ACTIVE to true in your environment variable and add a valid GOOGLE_API_KEY');
-        }
-
         if($this->scopeHasCoordinates()) {
-            return StreetViewStaticApi::make()->getThumbnail($this->latitude, $this->longitude, $width, $height, $options);
+            return app(DownloadStreetViewImageAction::class)->execute($this->latitude, $this->longitude, $width, $height, $options);
         }
+        return '';
+    }
+
+    /**
+     * @return array
+     */
+    public function getCoordinates(): array
+    {
+        return [
+            'latitude' => $this->latitude,
+            'longitude' => $this->longitude
+        ];
     }
 
     /**

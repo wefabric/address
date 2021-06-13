@@ -10,6 +10,10 @@ class StreetViewStaticApi
 {
     const URL = 'https://maps.googleapis.com/maps/api/streetview';
 
+    const WIDTH = '1024';
+
+    const HEIGHT = '1024';
+
     public ?Client $client = null;
 
     /**
@@ -50,13 +54,22 @@ class StreetViewStaticApi
      * @throws StreetViewStaticApiException
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function getThumbnail(float $latitude, float $longitude, int $width = 1024, int $height = 1024, array $options = []): string
+    public function getThumbnail(float $latitude, float $longitude, int $width = 0, int $height = 0, array $options = []): string
     {
         $defaultQueryParameters = [
-            'fov' => 90,
+            'fov' => 80,
             'pitch' => 0,
+            'heading' => 0,
             'return_error_codes' => true
         ];
+
+        if($width === 0) {
+            $width = self::WIDTH;
+        }
+
+        if($height === 0) {
+            $height = self::HEIGHT;
+        }
 
         $queryParameters = array_replace_recursive($defaultQueryParameters, $options['query'] ?? []);
 

@@ -15,6 +15,7 @@ return [
     */
     'google' => [
         'street_view_active' => env('GOOGLE_STREETVIEW_ACTIVE', false),
+        'street_view_cache_path' => 'streetview/tmp',
         'api_key' => env('GOOGLE_API_KEY')
     ]
 ];
