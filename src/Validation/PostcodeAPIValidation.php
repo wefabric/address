@@ -46,7 +46,7 @@ class PostcodeAPIValidation implements Validator
     public function validate()
     {
         $this->validated = false;
-        $this->errorBag['postcode_api'] = __('Postcode en huisnummer zijn vereist');
+        $this->errorBag['postcode_api'] = __('wefabric_address::address.postcode_housenumber_required');
         if(isset($this->data['postcode'], $this->data['housenumber']) && $this->data['postcode'] && $this->data['housenumber']) {
             $this->validated = true;
             unset($this->errorBag['postcode_api']);

@@ -30,7 +30,7 @@ class GetStreetViewImage extends Action
             }
         }
 
-        return Action::message(__('Street view images succesfully added!'));
+        return Action::message('wefabric_address::address.street_view_image_added');
     }
 
     /**
