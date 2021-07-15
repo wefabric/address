@@ -18,4 +18,11 @@ return [
         'street_view_cache_path' => 'streetview/tmp',
         'api_key' => env('GOOGLE_API_KEY')
     ]
+    
+    /*
+    |--------------------------------------------------------------------------
+    | The Postcode API Provider to use with https://github.com/nickurt/laravel-postcodeapi
+    |--------------------------------------------------------------------------
+    */
+    'postcode_api_provider' => env('POSTCODE_API_PROVIDER', 'Pro6PP_NL')
 ];
