@@ -46,7 +46,7 @@ class PostcodeAPI
     public function getApi(): Provider
     {
         if(!$this->provider) {
-            $this->provider = PostcodeApiProvider::create('Pro6PP_NL');
+           $this->provider = PostcodeApiProvider::create(config('address.postcode_api_provider', 'Pro6PP_NL'));
         }
         return $this->provider;
     }
