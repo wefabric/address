@@ -16,7 +16,7 @@ class Address extends Resource
      *
      * @var string
      */
-    public static $model = \App\Models\Address::class;
+    public static $model = \Wefabric\Address\Models\Address::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
