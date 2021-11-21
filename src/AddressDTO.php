@@ -84,4 +84,11 @@ class AddressDTO extends DataTransferObject implements Arrayable
         }
        return $address->fill($this->all());
     }
+
+    public function __get($key)
+    {
+        if($key === 'full_housenumber') {
+            return $this->housenumber.$this->housenumber_addition;
+        }
+    }
 }
