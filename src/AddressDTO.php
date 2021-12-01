@@ -8,6 +8,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\DataTransferObject\DataTransferObject;
 use Wefabric\Address\Action\AddressToStringAction;
+use Wefabric\Address\Google\Maps;
 
 class AddressDTO extends DataTransferObject implements Arrayable
 {
