@@ -55,7 +55,15 @@ class AddressDTO extends DataTransferObject implements Arrayable
     /**
      * @return string
      */
-    public function toString()
+    public function getGoogleMapsUrl(): string
+    {
+        return Maps::getUrl($this->toString());
+    }
+    
+    /**
+     * @return string
+     */
+    public function toString(): string
     {
         return app(AddressToStringAction::class)->execute($this->all());
     }
