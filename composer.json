@@ -15,7 +15,6 @@
     ],
     "require": {
         "spatie/data-transfer-object": "^2.8",
-        "nickurt/laravel-postcodeapi": "^1.16"
     },
     "autoload": {
         "psr-4": {
