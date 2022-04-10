@@ -14,7 +14,6 @@
         }
     ],
     "require": {
-        "spatie/laravel-medialibrary": "^9.0.0",
         "spatie/data-transfer-object": "^2.8",
         "nickurt/laravel-postcodeapi": "^1.16"
     },
