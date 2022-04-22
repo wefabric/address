@@ -43,6 +43,14 @@ class Address extends Model implements HasMedia
         'country_id'
     ];
 
+    protected array $required = [
+        'street',
+        'housenumber',
+        'postcode',
+        'city',
+        'country_id'
+    ];
+
     /**
      * @return string
      */
@@ -146,4 +154,52 @@ class Address extends Model implements HasMedia
             ->acceptsMimeTypes(['image/jpeg']);
     }
 
+    /**
+     * @param Collection|array $addressData
+     * @return \Domains\Addresses\Model\Address
+     */
+    public static function findOrCreate(Collection|array $addressData): \Support\Addresses\Models\Address
+    {
+        if(is_array($addressData)) {
+            $addressData = collect($addressData);
+        }
+
+        $addressClass = new self();
+
+        $missing = [];
+        foreach ($addressClass->required as $required) {
+            if(!$addressData->get($required)) {
+                $missing[] = $required;
+            }
+        }
+
+        if($missing) {
+            throw new \InvalidArgumentException(sprintf('Missing required address data: %s', implode(',', $missing)));
+        }
+
+        $query = self::query()
+            ->where('street', $addressData->get('street'))
+            ->where('housenumber', $addressData->get('housenumber'))
+            ->where('postcode', $addressData->get('postcode'))
+            ->where('city', $addressData->get('city'))
+            ->where('country_id', $addressData->get('country_id'));
+
+        if($addressData->get('housenumber_addition')) {
+            $query->where('housenumber_addition', $addressData->get('housenumber_addition'));
+        } else {
+            $query->where(function(Builder $query){
+                $query
+                    ->whereNull('housenumber_addition')
+                    ->orWhere('housenumber_addition', '');
+            });
+        }
+
+        if(!$address = $query->first()) {
+            $modelClass = \Wefabric\Address\Address::make()->getModelClass();
+            $address = new $modelClass($addressData->toArray());
+            $address->save();
+        }
+
+        return $address;
+    }
 }

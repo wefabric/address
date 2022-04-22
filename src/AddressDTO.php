@@ -84,14 +84,7 @@ class AddressDTO extends DataTransferObject implements Arrayable
      */
     public function toModel(): Model
     {
-        $model = \Wefabric\Address\Address::make()->getModelClass();
-        $address = new $model;
-        if($this->id) {
-            if(!$address = $model::query()->where('id', $this->id)->first()) {
-                $address = new $model;
-            }
-        }
-       return $address->fill($this->all());
+       return \Wefabric\Address\Address::make()->getModelClass()::findOrCreate($this->all());
     }
 
     public function __get($key)
