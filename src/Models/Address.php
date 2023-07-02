@@ -160,7 +160,7 @@ class Address extends Model implements HasMedia
      * @param Collection|array $addressData
      * @return \Domains\Addresses\Model\Address
      */
-    public static function findOrCreate(Collection|array $addressData): \Support\Addresses\Models\Address
+    public static function findOrCreate(Collection|array $addressData): Address
     {
         if(is_array($addressData)) {
             $addressData = collect($addressData);
