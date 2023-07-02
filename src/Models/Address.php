@@ -8,21 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Hash;
-use Spatie\MediaLibrary\HasMedia;
-use Spatie\MediaLibrary\InteractsWithMedia;
-use Spatie\MediaLibrary\MediaCollections\Models\Media;
-use Spatie\MediaLibrary\Support\File;
 use Wefabric\Address\Action\AddressToStringAction;
 use Wefabric\Address\Action\DownloadStreetViewImageAction;
 use Wefabric\Address\Exception\AddressException;
 use Wefabric\Address\Google\Maps;
 use Wefabric\Address\Google\StreetViewStaticApi;
 
-class Address extends Model implements HasMedia
+class Address extends Model
 {
     use HasFactory;
     use SoftDeletes;
-    use InteractsWithMedia;
 
     const STREET_VIEW_MEDIA_COLLECTION_KEY = 'google-street-view';
 
