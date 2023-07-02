@@ -90,7 +90,7 @@ class AddressDTO extends DataTransferObject implements Arrayable
     public function __get($key)
     {
         if($key === 'full_housenumber') {
-            return $this->housenumber.$this->housenumber_addition;
+            return $this->housenumber .'-'. $this->housenumber_addition;
         }
     }
 }
